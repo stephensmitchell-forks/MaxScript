@@ -1,3 +1,27 @@
+# =========================
+# Project Specific
+# =========================
+
+#ignore
+*
+/_MaxScript/MaxScript Documentation
+
+#except
+!.gitignore
+
+
+#exception for subdirectories
+!*/__path
+!*/macros
+
+
+#exception for subdirectory files
+
+
+
+
+# =========================
+
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
