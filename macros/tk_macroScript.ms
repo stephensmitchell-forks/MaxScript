@@ -1,20 +1,15 @@
 --||||||||||||||||||||||||||||||||||||||||||||||
---||||||||||   3ds max macroScript   |||||||||||
+--||||||||||      3ds max macros     |||||||||||
 --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 -- python.Import "time"
+-- python.Import "sys, os.path"
+-- python.Execute("sys.path.append(os.path.expandvars('%CLOUD%/_Programming/Qt/__path'))")
 
--- QtCore = python.Import "PySide2.QtCore"
-tk_main = python.Import "tk_main" --hotbox module
+tk_main = python.Import "tk_main" --hotBox module
+func = python.Import "tk_max_shared_functions"
 
-tk_max_func = python.Import "tk_max_func"
-
-makeSelection = tk_max_func.makeSelection
-classInfo = tk_max_func.classInfo
-setSnapState = tk_max_func.setSnapState
-getKeyState = tk_max_func.getKeyState
-
---syntax:
+--macro syntax:
 --	macroScript scriptName
 --	category: "CategoryName"
 --	buttonText: "text"
@@ -26,46 +21,31 @@ getKeyState = tk_max_func.getKeyState
 --		script_body
 --	)
 
-
-tkUi 		= "tk_macroScript.ui"
-tkTrans = "tk_macroScript.translate"
-tkView  = "tk_macroScript.viewport"
-tkEdit  = "tk_macroScript.edit"
-tkSel		= "tk_macroscript.selection"
+-- -----------------------------------------------
 
 
 
--- macroScript hb_viewport
--- category: tkUi
--- silentErrors: false
--- autoUndoEnabled: false
--- (
--- -- toolBar = tk_main.HotBox name:"viewport"
--- -- toolBar.hbShow()
--- toolBar = tk_main.HotBox name:"viewport"
--- toolBar.hbShow()
--- )
 
 macroScript tk_main
-category: tkUi
+category: "tk_macroScript.ui"
 silentErrors: false
 autoUndoEnabled: false
 (
-toolBar = tk_main.HotBox()
-toolBar.hbShow()
+	python.Execute "if 'tk_hotBox_init' not in locals() or 'tk_hotBox_init' not in globals(): tk_hotBox_init = tk_main.createInstance()"
+	python.Execute "if not tk_hotBox_init.isVisible(): tk_hotBox_init.hbShow()"
 )
 
 macroScript toggleGrid
-Category: tkUi
+Category: "tk_macroScript.ui"
 silentErrors: true
 autoUndoEnabled: false
 (
-max grid toggle --toggle viewport grid
-actionMan.executeAction 0 "370"  -- Tools: Viewport Selection Show Selection Bracket Toggle
+	max grid toggle --toggle viewport grid
+	actionMan.executeAction 0 "370"  -- Tools: Viewport Selection Show Selection Bracket Toggle
 )
 
 macroScript toggleUi -- hide menuBar not working
-category: tkUi
+category: "tk_macroScript.ui"
 silentErrors: false
 autoUndoEnabled: false
 (
@@ -92,13 +72,13 @@ autoUndoEnabled: false
 )
 
 macroScript snapToGrid
-category: tkTrans
+category: "tk_macroScript.translate"
 silentErrors: false
 autoUndoEnabled: false
 (
 	if (snapmode.getOSnapItemActive 4 1 == false) then
 	(
-		setSnapState("false")
+		func.setSnapState("false")
 		snapmode.setOSnapItemActive 4 1 (true);
 		snapMode.active = true;
 	)
@@ -121,13 +101,13 @@ autoUndoEnabled: false
 )
 
 macroScript snapToVert
-category: tkTrans
+category: "tk_macroScript.translate"
 silentErrors: false
 autoUndoEnabled: false
 (
 	if (snapmode.getOSnapItemActive 7 1 == false) then
 	(
-		setSnapState("false")
+		func.setSnapState("false")
 		snapmode.setOSnapItemActive 7 1 (true);
 		snapMode.active = true;
 	)
@@ -140,13 +120,13 @@ autoUndoEnabled: false
 )
 
 macroScript snapToEdge
-category: tkTrans
+category: "tk_macroScript.translate"
 silentErrors: false
 autoUndoEnabled: false
 (
 	if (snapmode.getOSnapItemActive 7 3 == false) then
 	(
-		setSnapState("false")
+		func.setSnapState("false")
 		snapmode.setOSnapItemActive 7 3 (true);
 		snapMode.active = true;
 	)
@@ -158,13 +138,13 @@ autoUndoEnabled: false
 )
 
 macroScript snapToMiddleEdge
-category: tkTrans
+category: "tk_macroScript.translate"
 silentErrors: false
 autoUndoEnabled: false
 (
 	if (snapmode.getOSnapItemActive 7 4 == false) then
 	(
-		setSnapState("false")
+		func.setSnapState("false")
 		snapmode.setOSnapItemActive 7 4 (true);
 		snapMode.active = true;
 	)
@@ -176,7 +156,7 @@ autoUndoEnabled: false
 )
 
 macroScript toggleXraySelected --toggle xray for the selected object
-category: tkView
+category: "tk_macroScript.viewport"
 silentErrors: false
 autoUndoEnabled: false
 (
@@ -188,7 +168,7 @@ autoUndoEnabled: false
 )
 
 macroScript toggleBackfaceCull --toggle backface culling for all geometry
-category: tkView
+category: "tk_macroScript.viewport"
 silentErrors: false
 autoUndoEnabled: false
 (
@@ -201,11 +181,11 @@ autoUndoEnabled: false
 )
 
 macroScript convertToPolygon
-category: tkEdit
+category: "tk_macroScript.edit"
 silentErrors: false
 autoUndoEnabled: true
 (
--- 	sel = makeSelection "Current" 0
+-- 	sel = func.makeSelection "Current" 0
 
 	macros.run "Modifier Stack" "Convert_to_Poly"
 	maxOps.CollapseNode obj off --collapse modifier stack
@@ -219,7 +199,7 @@ autoUndoEnabled: true
 )
 
 macroScript toggleSmoothPreview
-category: tkView
+category: "tk_macroScript.viewport"
 silentErrors: false
 autoUndoEnabled: false
 (	--framework for future function.
@@ -236,7 +216,7 @@ autoUndoEnabled: false
 )
 
 macroScript objectMode
-category: tkSel
+category: "tk_macroscript.selection"
 silentErrors: false
 autoUndoEnabled: false
 --documentaion on subObjectLevel
@@ -255,11 +235,11 @@ autoUndoEnabled: false
 )
 
 macroScript componentVertexMode
-category: tkSel
+category: "tk_macroscript.selection"
 silentErrors: false
 autoUndoEnabled: false
 (
-	classString = makeSelection "Current" 1 classInfo
+	classString = func.makeSelection "Current" 1 func.classInfo
 	--	[1] --object
 	--	[2] --baseObject
 	-- 	[5] --baseObject class
@@ -321,11 +301,11 @@ autoUndoEnabled: false
 )
 
 macroScript componentEdgeMode
-category: tkSel
+category: "tk_macroscript.selection"
 silentErrors: false
 autoUndoEnabled: false
 (
-	classString = makeSelection "Current" 1 classInfo
+	classString = func.makeSelection "Current" 1 func.classInfo
 	--	[1] --object
 	--	[2] --baseObject
 	-- 	[5] --baseObject classW
@@ -386,11 +366,11 @@ autoUndoEnabled: false
 )
 
 macroScript componentAltMode
-category: tkSel
+category: "tk_macroscript.selection"
 silentErrors: false
 autoUndoEnabled: false
 (
-	classString = makeSelection "Current" 1 classInfo
+	classString = func.makeSelection "Current" 1 func.classInfo
 	--	[1] --object
 	--	[2] --baseObject
 	-- 	[5] --baseObject classW
@@ -448,11 +428,11 @@ autoUndoEnabled: false
 )
 
 macroScript componentFacetMode
-category: tkSel
+category: "tk_macroscript.selection"
 silentErrors: false
 autoUndoEnabled: false
 (
-	classString = makeSelection "Current" 1 classInfo
+	classString = func.makeSelection "Current" 1 func.classInfo
 	--	[1] --object
 	--	[2] --baseObject
 	-- 	[5] --baseObject classW
@@ -519,7 +499,7 @@ autoUndoEnabled: false
 
 
 -- macroScript toggleToolbar
--- category: tkUi
+-- category: "tk_macroScript.ui"
 -- silentErrors: false
 -- autoUndoEnabled: false
 -- (
@@ -805,12 +785,12 @@ the MacroScript using the macros.run() method.
 -- 	)
 
 -- --uses imported function
--- fn classInfo argObjects=
+-- fn func.classInfo argObjects=
 -- (
 -- 	for obj in argObjects do
 -- 	(
---     tk_max_func = python.Import "tk_max_func"
---     func = tk_max_func.filterSelectionByBaseClass
+--     func = python.Import "func"
+--     func = func.filterSelectionByBaseClass
 --     baseObj = obj.baseObject
 	
 --     baseObjClass = classOf(baseObj) /*get the base object class.  ie. Editable_Poly*/
@@ -879,7 +859,7 @@ the MacroScript using the macros.run() method.
 -- )
 
 
--- fn setSnapState state=
+-- fn func.setSnapState state=
 -- (
 -- 	--set 'grid and snap settings'
 -- 	--body shapes

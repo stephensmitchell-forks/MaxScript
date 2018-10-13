@@ -5,6 +5,7 @@
 #ignore
 *
 /_MaxScript/MaxScript Documentation
+MaxScript notes.ms
 
 #except
 !.gitignore
