@@ -32,7 +32,7 @@ silentErrors: false
 autoUndoEnabled: false
 (
 	python.Execute "if 'tk_hotBox_init' not in locals() or 'tk_hotBox_init' not in globals(): tk_hotBox_init = tk_main.createInstance()"
-	python.Execute "if not tk_hotBox_init.isVisible(): tk_hotBox_init.hbShow()"
+	python.Execute "if not tk_hotBox_init.isVisible(): tk_hotBox_init.show()"
 )
 
 macroScript toggleGrid
